@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DATABASE_URL=postgresql://postgres:Tejas%402001@db.wywkucanulrrkqgexwcp.supabase.co:5432/postgres?sslmode=require
+      - DATABASE_URL=postgresql://postgres:Tejas%402001@db.wywkucanulrrkqgexwcp.supabase.co:5432/postgres?sslmode=require&prefer_simple_protocol=true
       - REDIS_URL=redis://default:hDbjDRpv9yi892LytkwuAs1yrKSw8cjL@redis-14159.c206.ap-south-1-1.ec2.redns.redis-cloud.com:14159
       - ENVIRONMENT=development
     depends_on:
