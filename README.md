@@ -5,7 +5,6 @@ Features
 High Performance: In-memory caching with sub-millisecond response times
 Scalable Architecture: Designed for billions of requests and thousands of campaigns
 Real-time Updates: Campaigns and targeting rules are updated in real-time
-Comprehensive Monitoring: Prometheus metrics and Grafana dashboards
 Robust Testing: Unit tests, integration tests, and benchmarks
 Production Ready: Docker containerization and health checks
 
@@ -38,8 +37,6 @@ targeting-engine/
 │   │   └── migrations.go          # Database migrations
 │   ├── cache/
 │   │   └── redis_cache.go         # Redis caching
-│   ├── monitoring/
-│   │   └── metrics.go             # Prometheus metrics
 │   └── utils/
 │       └── response.go            # Helper functions
 ├── pkg/
@@ -191,9 +188,6 @@ http_requests_total: Total request count
 active_campaigns_total: Number of active campaigns
 cache_hit_ratio: Cache efficiency percentage
 database_connections: Database connection pool stats
-
-Grafana Dashboard
-Access Grafana at http://localhost:3000 (admin/admin)
 Testing
 Run Tests
 bashgo test ./tests/...
