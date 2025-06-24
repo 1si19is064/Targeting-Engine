@@ -14,8 +14,8 @@ type Config struct {
 // Load loads configuration from environment variables
 func Load() *Config {
 	return &Config{
-		DatabaseURL: getEnv("DATABASE_URL", "postgres://user:password@localhost/targeting_engine?sslmode=disable"),
-		RedisURL:    getEnv("REDIS_URL", "redis://localhost:6379"),
+		DatabaseURL: getEnv("DATABASE_URL", "postgresql://postgres:Tejas%402001@db.wywkucanulrrkqgexwcp.supabase.co:5432/postgres?sslmode=require"),
+		RedisURL:    getEnv("REDIS_URL", "redis://default:hDbjDRpv9yi892LytkwuAs1yrKSw8cjL@redis-14159.c206.ap-south-1-1.ec2.redns.redis-cloud.com:14159"),
 		Port:        getEnv("PORT", "8080"),
 		Environment: getEnv("ENVIRONMENT", "development"),
 	}
