@@ -49,8 +49,9 @@ func (ts *TargetingService) GetMatchingCampaigns(req *models.DeliveryRequest) ([
 
 	// Iterate through all campaigns
 	for campaignID, campaign := range ts.campaignCache {
-		// Skip inactive campaigns
-		if campaign.Status != models.StatusActive {
+		// Skip inactive campaigns - check for both constant and string values
+		if !ts.isCampaignActive(campaign) {
+			log.Printf("Skipping inactive campaign: %s, status: %s", campaignID, campaign.Status)
 			continue
 		}
 
@@ -60,7 +61,28 @@ func (ts *TargetingService) GetMatchingCampaigns(req *models.DeliveryRequest) ([
 		}
 	}
 
+	log.Printf("Found %d matching campaigns for request: %+v", len(matchingCampaigns), req)
 	return matchingCampaigns, nil
+}
+
+// isCampaignActive checks if a campaign is active using multiple possible status values
+func (ts *TargetingService) isCampaignActive(campaign *models.Campaign) bool {
+	status := strings.ToUpper(strings.TrimSpace(campaign.Status))
+
+	// Check for various representations of active status
+	activeStatuses := []string{"ACTIVE", "ENABLED", "LIVE"}
+	for _, activeStatus := range activeStatuses {
+		if status == activeStatus {
+			return true
+		}
+	}
+
+	// Also check against the models constant if it exists
+	if campaign.Status == models.StatusActive {
+		return true
+	}
+
+	return false
 }
 
 // matchesTargetingRules checks if a request matches all targeting rules for a campaign
@@ -167,6 +189,11 @@ func (ts *TargetingService) refreshCache() {
 
 	log.Printf("Cache refreshed successfully. Campaigns: %d, Rules: %d",
 		len(campaigns), len(rules))
+
+	// Debug: Log campaign statuses
+	for id, campaign := range campaigns {
+		log.Printf("Campaign %s status: '%s' (active: %t)", id, campaign.Status, ts.isCampaignActive(campaign))
+	}
 }
 
 // loadCampaigns loads all campaigns from database
@@ -255,4 +282,9 @@ func (ts *TargetingService) ensureCacheIsFresh() {
 	if time.Since(ts.lastCacheUpdate) > ts.cacheRefreshRate {
 		go ts.refreshCache()
 	}
+}
+
+// ForceRefreshCache forces an immediate cache refresh (useful for testing)
+func (ts *TargetingService) ForceRefreshCache() {
+	ts.refreshCache()
 }
