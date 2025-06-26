@@ -17,6 +17,8 @@ type RedisCache struct {
 }
 
 func NewRedisCache(redisURL string) (*RedisCache, error) {
+	fmt.Println(redisURL)
+	fmt.Println("&&&&&&&&&&&&&&&")
 	opt, err := redis.ParseURL(redisURL)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse Redis URL: %w", err)
